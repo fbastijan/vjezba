@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <nav id="nav" class="navbar navbar-expand-lg navbar-light">
       <a class="navbar-brand" href="#">
         <img
           src="@/assets/instagram.png"
@@ -58,7 +58,7 @@
   color: #2c3e50;
 }
 
-nav {
+#nav {
   padding: 30px;
 
   .nav-link {
