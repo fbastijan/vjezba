@@ -29,21 +29,25 @@
             type="search"
             placeholder="Search"
             aria-label="Search"
+            v-model="store.searchTerm"
           />
         </form>
         <ul class="navbar-nav mt-2 mt-lg-0">
-          <li class="nav-item"></li>
-          <li class="nav-item">
+          <li v-show="!store.authenticated" class="nav-item">
             <router-link to="/login" class="nav-link">Login</router-link>
           </li>
-          <li class="nav-item">
+          <li v-show="!store.authenticated" class="nav-item">
             <router-link to="/signup" class="nav-link">Sign up</router-link>
+          </li>
+          <li v-show="store.authenticated" class="nav-item">
+            <a class="nav-link" href="#" @click.prevent="logout()">Log out</a>
           </li>
         </ul>
       </div>
     </nav>
-
-    <router-view />
+    <div class="container">
+      <router-view />
+    </div>
   </div>
 </template>
 
@@ -69,3 +73,36 @@
   }
 }
 </style>
+<script>
+import { firebase } from "@/firebase";
+import store from "@/store.js";
+
+export default {
+  data() {
+    return {
+      store,
+    };
+  },
+  methods: {
+    logout() {
+      firebase
+        .auth()
+        .signOut()
+        .then(() => {
+          this.$router.push({ name: "login" });
+        });
+    },
+  },
+};
+firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    store.authenticated = true;
+    console.log(user.email);
+
+    console.log("current user debugg", store.authenticated);
+  } else {
+    store.authenticated = false;
+    console.log("Nije prijavljen user");
+  }
+});
+</script>

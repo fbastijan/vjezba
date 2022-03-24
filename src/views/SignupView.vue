@@ -61,7 +61,7 @@
                 type="password"
                 class="form-control"
                 v-model="repassword"
-                id="exampleInputPassword1"
+                id="exampleInputPassword2"
                 placeholder="Password"
               />
             </div>
