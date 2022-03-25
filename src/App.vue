@@ -85,24 +85,30 @@ export default {
   },
   methods: {
     logout() {
-      firebase
-        .auth()
-        .signOut()
-        .then(() => {
-          this.$router.push({ name: "login" });
-        });
+      firebase.auth().signOut();
     },
   },
-};
-firebase.auth().onAuthStateChanged((user) => {
-  if (user) {
-    store.authenticated = true;
-    console.log(user.email);
 
-    console.log("current user debugg", store.authenticated);
-  } else {
-    store.authenticated = false;
-    console.log("Nije prijavljen user");
-  }
-});
+  mounted() {
+    const that = this;
+
+    firebase.auth().onAuthStateChanged((user) => {
+      if (user) {
+        that.store.authenticated = true;
+        that.store.userEmail = user.email;
+        console.log(user.email);
+        if (that.$route.name !== "home") {
+          that.$router.push({ name: "home" });
+        }
+        console.log("current user debugg", store.authenticated);
+      } else {
+        that.store.authenticated = false;
+        that.store.userEmail = "";
+        if (that.$route.name !== "login") {
+          that.$router.push({ name: "login" });
+        }
+      }
+    });
+  },
+};
 </script>
